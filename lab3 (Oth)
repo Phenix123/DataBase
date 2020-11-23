@@ -1,0 +1,134 @@
+CREATE DATABASE LITVINENKO;
+USE LITVINENKO;
+
+CREATE TABLE `role` (
+	`ID` BIGINT(20) NOT NULL AUTO_INCREMENT,
+	`Name` varchar(45) NOT NULL UNIQUE,
+	`Description` varchar(450) DEFAULT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `user` (
+	`ID` BIGINT(20) NOT NULL UNIQUE AUTO_INCREMENT,
+	`Name` varchar(150) NOT NULL,
+	`Email` varchar(150) NOT NULL unique,
+	`Password` varchar(45) NOT NULL,
+	`Role_ID` BIGINT(20) NOT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `session_result` (
+	`ID` INT NOT NULL UNIQUE AUTO_INCREMENT,
+	`Session_ID` BIGINT(20) NOT NULL,
+	`Variant_of_answer_ID` BIGINT(20) NOT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `avatar` (
+	`ID` BIGINT(20) NOT NULL UNIQUE AUTO_INCREMENT,
+	`Link` varchar(450) NOT NULL,
+	`User_ID` BIGINT(20) NOT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `type_of_question` (
+	`ID` BIGINT(20) NOT NULL UNIQUE AUTO_INCREMENT,
+	`Name` varchar(45) NOT NULL UNIQUE,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `comment` (
+	`ID` BIGINT(20) NOT NULL UNIQUE AUTO_INCREMENT,
+	`Text` varchar(450) NOT NULL,
+	`User_ID` BIGINT(20) NOT NULL,
+	`Question_ID` BIGINT(20) NOT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `form` (
+	`ID` BIGINT(20) NOT NULL UNIQUE AUTO_INCREMENT,
+	`Private` TINYINT(4) NOT NULL,
+	`User_ID` BIGINT(20) NOT NULL,
+	`Avatar_ID` BIGINT(20) NOT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `user_has_access_to_form` (
+	`User_ID` BIGINT(20) NOT NULL,
+	`Form_ID` BIGINT(20) NOT NULL
+);
+
+CREATE TABLE `question` (
+	`ID` BIGINT(20) NOT NULL UNIQUE AUTO_INCREMENT,
+	`Optional` TINYINT(4) NOT NULL,
+	`Type_of_question_ID` BIGINT(20) NOT NULL,
+	`Form_ID` BIGINT(20) NOT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `variant_of_answer` (
+	`ID` BIGINT(20) NOT NULL UNIQUE AUTO_INCREMENT,
+	`Contents` Text DEFAULT NULL,
+	`Question_ID` BIGINT(20) NOT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+CREATE TABLE `session` (
+	`ID` BIGINT(20) NOT NULL UNIQUE auto_increment,
+	`User_ID` BIGINT(20) NOT NULL,
+    PRIMARY KEY (`ID`)
+);
+
+/*Здесь добавляем данные до создания внеших ключей*/
+
+INSERT INTO litvinenko.user values(1, 'Dima', 'cat1020486@gmail.com', 'CoolerPass', '1');
+INSERT INTO litvinenko.user values (2, 'Katya', 'katya@gmail.com', 'Password', '1');
+INSERT INTO litvinenko.user values (3, 'Misha', 'misha@gmail.com', 'Password', '1');
+INSERT INTO litvinenko.form values (1, 1, 1, 1);
+INSERT INTO litvinenko.form values (2, 2, 2, 2);
+INSERT INTO litvinenko.role values (1, 'Dima', 'DaTak');
+INSERT INTO litvinenko.session values(1, 1);
+INSERT INTO litvinenko.session values(2, 2);
+INSERT INTO litvinenko.session values(3, 3);
+INSERT INTO litvinenko.user_has_access_to_form values(1, 1);
+INSERT INTO litvinenko.user_has_access_to_form values(2, 2);
+INSERT INTO litvinenko.avatar values(1,'SomeText',1);
+INSERT INTO litvinenko.avatar values(2,'Text',2);
+
+/*ADD FOREIGN KEY*/
+ALTER TABLE `litvinenko`.`session` ADD CONSTRAINT `session_fk0` FOREIGN KEY (`User_ID`) REFERENCES `litvinenko`.`user` (`ID`);
+ALTER TABLE `litvinenko`.`variant_of_answer` ADD CONSTRAINT `variant_of_answer_fk0` FOREIGN KEY (`Question_ID`) REFERENCES `litvinenko`.`question` (`ID`);
+ALTER TABLE `litvinenko`.`question` ADD CONSTRAINT `question_fk0` FOREIGN KEY (`Form_ID`) REFERENCES `litvinenko`.`form` (`ID`);
+ALTER TABLE `litvinenko`.`question` ADD CONSTRAINT `question_fk1` FOREIGN KEY (`Type_of_question_ID`) REFERENCES `litvinenko`.`type_of_question` (`ID`);
+ALTER TABLE `litvinenko`.`user_has_access_to_form` ADD CONSTRAINT `user_has_access_to_form_fk0` FOREIGN KEY (`Form_ID`) REFERENCES `litvinenko`.`form` (`ID`);
+ALTER TABLE `litvinenko`.`user_has_access_to_form` ADD CONSTRAINT `user_has_access_to_form_fk1` FOREIGN KEY (`User_ID`) REFERENCES `litvinenko`.`user` (`ID`);
+ALTER TABLE `litvinenko`.`form` ADD CONSTRAINT `form_fk0` FOREIGN KEY (`Avatar_ID`) REFERENCES `litvinenko`.`avatar` (`ID`);
+ALTER TABLE `litvinenko`.`form` ADD CONSTRAINT `form_fk1` FOREIGN KEY (`User_ID`) REFERENCES `litvinenko`.`user` (`ID`);
+ALTER TABLE `litvinenko`.`user` ADD CONSTRAINT `user_fk0` FOREIGN KEY (`Role_ID`) REFERENCES `litvinenko`.`role` (`ID`);
+ALTER TABLE `litvinenko`.`comment` ADD CONSTRAINT `сommnet_fk0` FOREIGN KEY (`User_ID`) REFERENCES `litvinenko`.`user` (`ID`);
+ALTER TABLE `litvinenko`.`comment` ADD CONSTRAINT `сomment_fk1` FOREIGN KEY (`Question_ID`) REFERENCES `litvinenko`.`question` (`ID`);
+ALTER TABLE `litvinenko`.`avatar` ADD CONSTRAINT `avatar_fk0` FOREIGN KEY (`User_ID`) REFERENCES `litvinenko`.`user` (`ID`);
+ALTER TABLE `litvinenko`.`session_result` ADD CONSTRAINT `session_result_fk0` FOREIGN KEY (`Session_ID`) REFERENCES `litvinenko`.`session` (`ID`);
+ALTER TABLE `litvinenko`.`session_result` ADD CONSTRAINT `session_result_fk1` FOREIGN KEY (`Variant_of_answer_ID`) REFERENCES `litvinenko`.`variant_of_answer` (`ID`);
+
+           
+ /* ALTER TABLE */
+ ALTER TABLE `litvinenko`.`avatar` ADD d timestamp;
+ ALTER TABLE `litvinenko`.`avatar` RENAME `avatare`;
+ ALTER TABLE `litvinenko`.`variant_of_answer` MODIFY Contents varchar(450);
+ ALTER TABLE `litvinenko`.`form` CHANGE Private Protect BIGINT(25);
+ ALTER TABLE `litvinenko`.`avatare` DROP COLUMN d;
+ 
+ ALTER TABLE `litvinenko`.`role` ADD temp BIGINT(20);
+ ALTER TABLE `litvinenko`.`avatare` RENAME `avatar`;
+ ALTER TABLE `litvinenko`.`variant_of_answer` MODIFY Contents TEXT;
+ ALTER TABLE `litvinenko`.`form` CHANGE Protect Private BIGINT(20);
+ ALTER TABLE `litvinenko`.`role` DROP COLUMN temp;
+/* Rename */
+RENAME TABLE user TO sUser,
+             role TO part,
+             form TO shape;
+             
+/*Удалить комментарий для удаления базы данных*/
+/*DROP TABLE avatar, comment, shape, question, part, session, session_result, type_of_question, sUser, user_has_access_to_form, variant_of_answer;
+DROP DATABASE litvinenko;
