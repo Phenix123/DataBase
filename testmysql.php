@@ -6,7 +6,7 @@
 */
 $host = 'localhost';
 $user = 'root';
-$password = ''; //To be completed if you have set a password to root
+$password = 'admin'; //To be completed if you have set a password to root
 $database = 'cup'; //To be completed to connect to a database. The database must exist.
 $port = NULL; //Default must be NULL to use default port
 $mysqli = new mysqli('127.0.0.1', $user, $password, $database, $port);
@@ -20,9 +20,10 @@ echo '<p>Server '.$mysqli->server_info.'</p>';
 echo '<p>Initial charset: '.$mysqli->character_set_name().'</p>';
   
 $link = mysqli_connect($host, $user, $password, $database);
-#mysqli_set_charset("cp1251", $link);
 
-$query ="SELECT * FROM tournumbers";
+mysqli_set_charset($link, "utf8");
+
+$query ="SELECT * FROM players";
 $query2 = "SELECT * FROM statistics WHERE Gameid = 1";
 
 $result=mysqli_query($link, $query);
@@ -32,12 +33,12 @@ $result2=mysqli_query($link, $query2);
 if($result)
 {
     $rows = mysqli_num_rows($result); // количество полученных строк
-    echo "<table><tr><th>Id</th><th>Дата начала</th><th>Дата конца</th></tr>";
+    echo "<table><tr><th>Id</th><th>Имя Фамилия</th></tr>";
     for ($i = 0 ; $i < $rows ; ++$i)
     {
         $row = mysqli_fetch_row($result);
         echo "<tr>";
-            for ($j = 0 ; $j < 3 ; ++$j) echo "<td>$row[$j]</td>";
+            for ($j = 0 ; $j < 2 ; ++$j) echo "<td>$row[$j]</td>";
         echo "</tr>";
     }
     echo "</table>";
