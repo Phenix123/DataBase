@@ -1,0 +1,25 @@
+* {
+    font-family: "Roboto Light", serif;
+    background: aliceblue;
+    color: #100404;
+}
+table {
+    width: 70%; /* Ширина таблицы */
+    border: 3px solid #003e00; /* Рамка вокруг таблицы */
+    margin: auto; /* Выравниваем таблицу по центру окна  */
+    border-collapse: collapse;
+}
+td {
+    text-align: left; /* Выравниваем текст по центру ячейки */
+    border: 1px solid #000000;
+    padding: 2px;
+}
+p {
+    margin: auto;
+    text-align: center;
+}
+
+h1 {
+    margin: auto;
+    text-align: center;
+}

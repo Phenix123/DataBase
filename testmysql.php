@@ -1,9 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>My Cup Table</h1>
+
+<script src="./script.js"></script>
+</body>
+</html>
 <?php
-/*
-* Change the value of $password if you have set a password on the root userid
-* Change NULL to port number to use DBMS other than the default using port 3306
-*
-*/
 $host = 'localhost';
 $user = 'root';
 $password = 'admin'; //To be completed if you have set a password to root
@@ -40,12 +50,12 @@ $result3 = mysqli_query($link, $procedure_query);
 
 
 if($result6)
-    printf("Удаление и добавление успешны");
+    echo("<p>Удаление и добавление успешны</p>");
 
 if($result)
 {
     $rows = mysqli_num_rows($result); // количество полученных строк
-    echo "<table><tr><th>Id</th><th>Название команды</th></tr>";
+    echo "<table><tr><th>№</th><th>Название команды</th></tr>";
     for ($i = 0 ; $i < $rows ; ++$i)
     {
         $row = mysqli_fetch_row($result);
@@ -53,7 +63,7 @@ if($result)
             for ($j = 0 ; $j < 2 ; ++$j) echo "<td>$row[$j]</td>";
         echo "</tr>";
     }
-    echo "</table>";
+    echo "</table></br>";
      
     // очищаем результат
     mysqli_free_result($result);
@@ -61,7 +71,7 @@ if($result)
 if($result2)
 {
     $rows = mysqli_num_rows($result2); // количество полученных строк
-    echo "<table><tr><th>Id</th><th>PlayerId</th><th>Goals</th><th>Yellow card</th><th>Red Card</th><th>Assists</th><th>Game Id</th></tr>";
+    echo "<table><tr><th>№</th><th>PlayerId</th><th>Goals</th><th>Yellow card</th><th>Red Card</th><th>Assists</th><th>Номер игры</th></tr>";
     for ($i = 0 ; $i < $rows ; ++$i)
     {
         $row = mysqli_fetch_row($result2);
@@ -78,8 +88,8 @@ if($result2)
 if($result3)
 {
     $rows = mysqli_num_rows($result3); // количество полученных строк
-    echo "Показать игроков 2-ой команды";
-    echo "<table><tr><th>FIO</th><th>TeamId</th></tr>";
+    echo "</br><p>Показать игроков второй команды</p><br>";
+    echo "<table><tr><th>FIO</th><th>Номер команды</th></tr>";
     for ($i = 0 ; $i < $rows ; ++$i)
     {
         $row = mysqli_fetch_row($result3);
